@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:news_app/Modules/article_model.dart';
 
 void main() {
   runApp(MyApp());
@@ -60,10 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final dio = Dio();
 
-  getHttp() async {
+  Future<List<dynamic>> getHttp() async {
     final response = await dio.get(
         'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
-    return response;
+    return response.data['articles']
+        .map((json) => Article.fromJson(json))
+        .toList();
+    ;
   }
 
   @override
@@ -88,7 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
         future: getHttp(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Text(snapshot.data.toString());
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(snapshot.data![index].title!),
+                );
+              },
+            );
           }
           return CircularProgressIndicator();
         },
