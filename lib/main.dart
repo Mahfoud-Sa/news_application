@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:news_app/app/features/display_news/data/Modules/article_model.dart';
+import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/article_detailes.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'news Application'),
     );
   }
 }
@@ -67,10 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List<dynamic>> getHttp() async {
     final response = await dio.get(
         'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
-    return response.data['articles']
-        .map((json) => Article.fromJson(json))
+    print(response.data['articles']);
+    ArticleModel article = ArticleModel.fromJson(response.data['articles'][0]);
+    var articles = response.data['articles']
+        .map((json) => ArticleModel.fromJson(json))
         .toList();
     ;
+    // print(article.t);
+    return articles;
   }
 
   @override
@@ -90,23 +93,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 return ListTile(
                   onTap: () {
                     //Navigator.push()
-                    ArticleDetailes(article: snapshot.data![0] as Article);
+                    Get.to(ArticleDetailes(
+                        article: snapshot.data![0] as ArticleModel));
                     //print();
                   },
                   title: Image.network(snapshot.data![index].urlToImage!),
-                  subtitle: Text(snapshot.data![index].description!),
+                  subtitle: Text(snapshot.data![index].source.id.toString()),
                 );
               },
             );
           }
-          return CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getHttp,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
