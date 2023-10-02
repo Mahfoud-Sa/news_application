@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:news_app/app/features/display_news/domain/entities/article.dart';
-
+import 'package:json_annotation/json_annotation.dart';
 import 'source.dart';
 
+@JsonSerializable()
 class ArticleModel extends ArticleEntity {
   final SourceModel? source;
 
@@ -32,12 +33,12 @@ class ArticleModel extends ArticleEntity {
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) => ArticleModel(
         source: SourceModel.fromJson(json["source"]),
-        author: json["author"],
-        title: json["title"],
-        descripution: json["descripution"],
-        url: json["url"],
-        urlToImage: json["urlToImage"],
+        author: json["author"] ?? "Unknewn",
+        title: json["title"] ?? "Unknewn",
+        descripution: json["descripution"] ?? "Unknewn",
+        url: json["url"] ?? "Unknewn",
+        urlToImage: json["urlToImage"] ?? "Unknewn",
         publishedAt: json["publishedAt"],
-        content: json["content"],
+        content: json["content"] ?? "Unknewn",
       );
 }
