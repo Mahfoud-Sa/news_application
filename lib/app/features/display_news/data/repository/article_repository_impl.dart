@@ -8,26 +8,35 @@ import 'package:news_app/app/features/display_news/domain/entities/article.dart'
 import 'package:news_app/app/features/display_news/domain/repository/article_repository.dart';
 import 'package:dio/dio.dart';
 
-class ArticleRepositoryRepositoryImpl implements ArticleRepository {
-  final NewsApiService _newsApiService;
-  ArticleRepositoryRepositoryImpl(this._newsApiService);
-  @override
+class ArticleRepositoryRepositoryImpl {
+  // final NewsApiService _newsApiService;
+  //ArticleRepositoryRepositoryImpl(this._newsApiService);
+  //@override
   Future<DataState<List<ArticleModel>>> getNewsArticles() async {
+    var dio = Dio();
     try {
-      final httpResponse = await _newsApiService.getNewsArticles(
-        apiKey: newsAPIBaseURL,
-        country: country,
-        category: category,
-      );
+      final response = await dio.get(
+          'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
+      //print(response.data['articles']);
+      //ArticleModel article =
+      //ArticleModel.fromJson(response.data['articles'][0]);
+      var httpResponse = response.data['articles']
+          .map((json) => ArticleModel.fromJson(json))
+          .toList();
+      // final httpResponse = await _newsApiService.getNewsArticles(
+      // apiKey: newsAPIBaseURL,
+      //  country: country,
+      //  category: category,
+      //  );
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {
-        DioException(
+        return DataFailed(DioException(
             error: httpResponse.response.statusMessage,
             response: httpResponse.response,
             type: DioExceptionType.badResponse,
-            requestOptions: httpResponse.response.requestOptions);
+            requestOptions: httpResponse.response.requestOptions));
       }
     } on DioException catch (e) {
       return DataFailed(e);
