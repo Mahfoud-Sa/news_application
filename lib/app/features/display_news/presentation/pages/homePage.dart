@@ -40,7 +40,10 @@ class HomePage extends StatelessWidget {
               height: 10,
             ),
             itemBuilder: (context, index) {
-              return NewsCardWidget();
+              return NewsCardWidget(
+                newsTitle: 'News Title',
+                newsCategory: 'News Category',
+              );
             },
           )
         ],
@@ -50,31 +53,47 @@ class HomePage extends StatelessWidget {
 }
 
 class NewsCardWidget extends StatelessWidget {
-  const NewsCardWidget({
+  final String newsTitle;
+  final String newsCategory;
+
+  NewsCardWidget({
     super.key,
+    required this.newsTitle,
+    required this.newsCategory,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      //color: Colors.blueGrey,
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        //color: Colors.amber,
-        height: 150,
-        child: ListTile(
-          leading: Icon(Icons.newspaper),
+      child: Card(
+        child: Row(
+          children: [
+            Image.asset(
+              'assets/images/error_image.jpg',
+              fit: BoxFit.fill,
+              height: 100,
+              width: 120,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  newsTitle,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  newsCategory,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            )
+          ],
         ),
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 61, 39, 39),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xff1d1617).withOpacity(0.07),
-                offset: Offset(0, 10),
-                blurRadius: 0,
-                spreadRadius: 0,
-              )
-            ]),
       ),
     );
   }
