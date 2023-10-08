@@ -1,8 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/app/features/display_news/data/modules/article.dart';
+import 'package:news_app/app/features/display_news/data/repository/article_repository_impl.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/search_widget.dart';
+import 'package:dio/dio.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final dio = Dio();
+
+  Future<List<dynamic>> getNews() async {
+    //ArticleRepositoryRepositoryImpl().getNewsArticles();
+    final resp = ArticleRepositoryRepositoryImpl().getNewsArticles();
+    print(resp);
+    final response = await dio.get(
+        'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
+
+    print(response.data['articles']);
+    ArticleModel article = ArticleModel.fromJson(response.data['articles'][0]);
+    var articles = response.data['articles']
+        .map((json) => ArticleModel.fromJson(json))
+        .toList();
+
+    // print(article.t);
+    return articles;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +59,27 @@ class HomePage extends StatelessWidget {
                   fontWeight: FontWeight.w600),
             ),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 100,
-            separatorBuilder: (context, index) => SizedBox(
-              height: 10,
-            ),
-            itemBuilder: (context, index) {
-              return NewsCardWidget(
-                newsTitle: 'News Title',
-                newsCategory: 'News Category',
-              );
+          FutureBuilder(
+            future: getNews(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (context, index) => SizedBox(
+                    height: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    return NewsCardWidget(
+                      newsTitle: snapshot.data![index].title,
+                      newsCategory: snapshot.data![index].source.id.toString(),
+                      imagePath: snapshot.data![index].urlToImage!,
+                    );
+                  },
+                );
+              }
+              return CircularProgressIndicator();
             },
           )
         ],
@@ -55,11 +91,13 @@ class HomePage extends StatelessWidget {
 class NewsCardWidget extends StatelessWidget {
   final String newsTitle;
   final String newsCategory;
+  final String imagePath;
 
   NewsCardWidget({
     super.key,
     required this.newsTitle,
     required this.newsCategory,
+    required this.imagePath,
   });
 
   @override
@@ -70,8 +108,8 @@ class NewsCardWidget extends StatelessWidget {
       child: Card(
         child: Row(
           children: [
-            Image.asset(
-              'assets/images/error_image.jpg',
+            Image.network(
+              (imagePath),
               fit: BoxFit.fill,
               height: 100,
               width: 120,
@@ -82,13 +120,18 @@ class NewsCardWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  newsTitle,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                SizedBox(
+                  width: 200,
+                  child: Text(
+                    newsTitle,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
                 ),
                 Text(
                   newsCategory,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 12),
                 ),
               ],
             )
