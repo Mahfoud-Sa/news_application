@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/data/repository/article_repository_impl.dart';
 import 'package:news_app/app/features/display_news/domain/repository/article_repository.dart';
+import 'package:news_app/app/features/display_news/presentation/pages/homePage.dart';
 import 'package:news_app/article_detailes.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'news Application'),
+      home: const HomePage(),
     );
   }
 }
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List<dynamic>> getHttp() async {
     //ArticleRepositoryRepositoryImpl().getNewsArticles();
     final resp = ArticleRepositoryRepositoryImpl().getNewsArticles();
-    print(resp.);
+    print(resp);
     final response = await dio.get(
         'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
 
