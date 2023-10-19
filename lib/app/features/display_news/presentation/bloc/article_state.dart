@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/app/core/resources/data_state.dart';
+import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/domain/entities/article.dart';
 import 'package:dio/dio.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
@@ -11,8 +13,8 @@ class RemoteArticlesLoading extends RemoteArticleState {
 }
 
 class RemoteArticlesDone extends RemoteArticleState {
-  final int counter;
-  RemoteArticlesDone(this.counter);
+  final List<dynamic> data;
+  RemoteArticlesDone(this.data);
 }
 
 class RemoteArticlesException extends RemoteArticleState {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/data/repository/article_repository_impl.dart';
+import 'package:news_app/app/features/display_news/domain/usecase/get_article.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_state.dart';
@@ -38,16 +39,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void initState() {
-    BlocProvider.of<RemoteArticleBloc>(context).add(GetArticles());
-    super.initState();
-  }
+  // void initState() {
+  //   BlocProvider.of<RemoteArticleBloc>(context).add(GetArticles());
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: () {
-        // BlocProvider.of<RemoteArticleBloc>(context).add();
+        BlocProvider.of<RemoteArticleBloc>(context).add(GetArticles());
+        //GetArticleUseCase
+        // GetArticleUseCase arti = GetArticleUseCase();
+        // print(arti());
       }),
       appBar: AppBar(
         title: Text('News Application'),
@@ -76,35 +80,25 @@ class _HomePageState extends State<HomePage> {
           ),
           BlocBuilder<RemoteArticleBloc, RemoteArticleState>(
               builder: (_, state) {
-            //print(state);
-            // if (state is RemoteArticlesDone) {
-            //   return ListView.separated(
-            //     shrinkWrap: true,
-            //     physics: NeverScrollableScrollPhysics(),
-            //     itemCount: state.articles!.length,
-            //     separatorBuilder: (context, index) => SizedBox(
-            //       height: 10,
-            //     ),
-            //     itemBuilder: (context, index) {
-            //       return NewsCardWidget(
-            //         newsTitle: 'state.data![index].title',
-            //         newsCategory: ' snapshot.data![index].source.id.toString()',
-            //         imagePath: 'snapshot.data![index].urlToImage!',
-            //       );
-            //     },
-            //   );
-            // }
-            if (state is RemoteArticlesLoading) {
+            if (state is RemoteArticlesDone) {
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: state.data!.length,
+                separatorBuilder: (context, index) => SizedBox(
+                  height: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return NewsCardWidget(
+                    newsTitle: state.data![index].title,
+                    newsCategory: state.data![index].source.id.toString(),
+                    imagePath: state.data![index].urlToImage!,
+                  );
+                },
+              );
+            } else {
               return const Center(child: CircularProgressIndicator());
             }
-            if (state is RemoteArticlesException) {
-              return Center(child: Text(state.errorMessage));
-            }
-            if (state is RemoteArticlesDone) {
-              return Center(child: Text(state.counter.toString()));
-            }
-
-            return Text('check internet connection');
           })
           // FutureBuilder(
           //   future: getNews(),

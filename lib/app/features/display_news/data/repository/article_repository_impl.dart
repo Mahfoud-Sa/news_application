@@ -14,32 +14,30 @@ class ArticleRepositoryRepositoryImpl {
   //@override
   Future<DataState<List<ArticleModel>>> getNewsArticles() async {
     var dio = Dio();
-    try {
-      final response = await dio.get(
-          'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
-      //print(response.data['articles']);
-      //ArticleModel article =
-      //ArticleModel.fromJson(response.data['articles'][0]);
-      var httpResponse = response.data['articles']
-          .map((json) => ArticleModel.fromJson(json))
-          .toList();
-      // final httpResponse = await _newsApiService.getNewsArticles(
-      // apiKey: newsAPIBaseURL,
-      //  country: country,
-      //  category: category,
-      //  );
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
-      } else {
-        return DataFailed(DioException(
-            error: httpResponse.response.statusMessage,
-            response: httpResponse.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: httpResponse.response.requestOptions));
-      }
-    } on DioException catch (e) {
-      return DataFailed(e);
+    final response = await dio.get(
+        'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
+    //print(response.data['articles']);
+    //ArticleModel article =
+    //ArticleModel.fromJson(response.data['articles'][0]);
+    var httpResponse = response.data['articles']
+        .map((json) => ArticleModel.fromJson(json))
+        .toList();
+    // final httpResponse = await _newsApiService.getNewsArticles(
+    // apiKey: newsAPIBaseURL,
+    //  country: country,
+    //  category: category,
+    //  );
+    var c = print(response.statusMessage == 'OK');
+    if (response.statusMessage == 'OK') {
+      print(response.data);
+      return DataSuccess(httpResponse);
+    } else {
+      return DataFailed(DioException(
+          error: httpResponse.response.statusMessage,
+          response: httpResponse.response,
+          type: DioExceptionType.badResponse,
+          requestOptions: httpResponse.response.requestOptions));
     }
   }
 }
