@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
@@ -10,6 +11,7 @@ import 'package:news_app/app/features/display_news/presentation/pages/news_page_
 import 'package:news_app/app/features/display_news/presentation/widgets/search_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,40 +21,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final dio = Dio();
-
-  Future<List<dynamic>> getNews() async {
-    //ArticleRepositoryRepositoryImpl().getNewsArticles();
-    final resp = ArticleRepositoryRepositoryImpl().getNewsArticles();
-    print(resp);
-    final response = await dio.get(
-        'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
-
-    print(response.data['articles']);
-    ArticleModel article = ArticleModel.fromJson(response.data['articles'][0]);
-    var articles = response.data['articles']
-        .map((json) => ArticleModel.fromJson(json))
-        .toList();
-
-    // print(article.t);
-    return articles;
-  }
-
   @override
-  // void initState() {
-  //   BlocProvider.of<RemoteArticleBloc>(context).add(GetArticles());
-  //   super.initState();
-  // }
+  void initState() {
+    BlocProvider.of<RemoteArticleBloc>(context).add(GetArticles());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        BlocProvider.of<RemoteArticleBloc>(context).add(GetArticles());
-        //GetArticleUseCase
-        // GetArticleUseCase arti = GetArticleUseCase();
-        // print(arti());
-      }),
       appBar: AppBar(
         title: Text('News Application'),
         centerTitle: true,
@@ -153,11 +130,14 @@ class NewsCardWidget extends StatelessWidget {
         child: Card(
           child: Row(
             children: [
-              Image.network(
-                (imagePath),
+              CachedNetworkImage(
+                imageUrl: imagePath,
                 fit: BoxFit.fill,
                 height: 100,
                 width: 120,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) =>
+                    Image.asset('assets/images/error_imag.jpg'),
               ),
               const SizedBox(
                 width: 10,
