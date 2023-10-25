@@ -5,15 +5,13 @@ import 'package:news_app/app/features/display_news/data/repository/article_repos
 import 'package:news_app/app/features/display_news/domain/entities/article.dart';
 import 'package:news_app/app/features/display_news/domain/repository/article_repository.dart';
 
-class GetArticleUseCase
-    implements UseCase<DataState<List<ArticleEntity>>, void> {
+class GetArticleUseCase implements UseCase<DataState<List<dynamic>>, void> {
   //final ArticleRepository _articleRepository;
-  final ArticleRepositoryRepositoryImpl _articleRepository =
-      ArticleRepositoryRepositoryImpl();
+  final ArticleRepositoryImpl _articleRepository = ArticleRepositoryImpl();
 
   GetArticleUseCase();
   @override
-  Future<DataState<List<ArticleModel>>> call({void params}) {
+  Future<DataState<List<dynamic>>> call({void params}) {
     return _articleRepository.getNewsArticles();
   }
 }

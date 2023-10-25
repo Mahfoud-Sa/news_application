@@ -8,11 +8,11 @@ import 'package:news_app/app/features/display_news/domain/entities/article.dart'
 import 'package:news_app/app/features/display_news/domain/repository/article_repository.dart';
 import 'package:dio/dio.dart';
 
-class ArticleRepositoryRepositoryImpl {
+class ArticleRepositoryImpl {
   // final NewsApiService _newsApiService;
   //ArticleRepositoryRepositoryImpl(this._newsApiService);
   //@override
-  Future<DataState<List<ArticleModel>>> getNewsArticles() async {
+  Future<DataState<List<dynamic>>> getNewsArticles() async {
     var dio = Dio();
 
     final response = await dio.get(
@@ -23,14 +23,16 @@ class ArticleRepositoryRepositoryImpl {
     var httpResponse = response.data['articles']
         .map((json) => ArticleModel.fromJson(json))
         .toList();
+
+    print(httpResponse.runtimeType);
     // final httpResponse = await _newsApiService.getNewsArticles(
     // apiKey: newsAPIBaseURL,
     //  country: country,
     //  category: category,
     //  );
-    var c = print(response.statusMessage == 'OK');
+    //var c = print(response.statusMessage == 'OK');
     if (response.statusMessage == 'OK') {
-      print(response.data);
+      // print(response.data);
       return DataSuccess(httpResponse);
     } else {
       return DataFailed(DioException(

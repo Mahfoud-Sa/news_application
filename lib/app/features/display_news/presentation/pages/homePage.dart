@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 40,
           ),
-          Padding(
+          const Padding(
             padding: const EdgeInsets.only(left: 15.0, bottom: 10),
             child: Text(
               'Last News',
@@ -67,9 +67,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemBuilder: (context, index) {
                   return NewsCardWidget(
-                    newsTitle: state.data![index].title,
-                    newsCategory: state.data![index].source.id.toString(),
-                    imagePath: state.data![index].urlToImage!,
+                    newsTitle: state.data[index].title!,
+                    newsCategory: state.data[index].source!.id.toString(),
+                    imagePath: state.data[index].urlToImage!,
                   );
                 },
               );
