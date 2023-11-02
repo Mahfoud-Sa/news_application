@@ -7,21 +7,31 @@ abstract class RemoteArticleEvent {
   const RemoteArticleEvent();
 }
 
-class GetArticles extends RemoteArticleEvent {
-  const GetArticles();
+class GetAllArticles extends RemoteArticleEvent {
+  const GetAllArticles();
 }
 
+class GetSportArticles extends RemoteArticleEvent {
+  const GetSportArticles();
+}
 
-// void onGetArticle() async {
-//     Dio dio = Dio();
-//     final response = await dio.get(
-//         'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
-//     //DataSuccess(response.data);
-//     //print(response.data['articles']);
-//     //ArticleModel article = ArticleModel.fromJson(response.data['articles'][0]);
-//     var articles = response.data['articles']
-//         .map((json) => ArticleModel.fromJson(json))
-//         .toList();
-//     print(articles.data);
-//     final datastate = DataFailed(articles.data); // _getarticleUseCase();
-//   }
+class GetAnimalesArticles extends RemoteArticleEvent {
+  const GetAnimalesArticles();
+}
+
+class GetTechnologyArticles extends RemoteArticleEvent {
+  const GetTechnologyArticles();
+}
+
+class GetHealthArticles extends RemoteArticleEvent {
+  const GetHealthArticles();
+}
+
+class GetFundsArticles extends RemoteArticleEvent {
+  const GetFundsArticles();
+}
+
+class GetSearchArticles extends RemoteArticleEvent {
+  final String search;
+  const GetSearchArticles(this.search);
+}

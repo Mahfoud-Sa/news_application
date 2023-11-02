@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => RemoteArticleBloc(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'News Application',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

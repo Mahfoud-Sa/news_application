@@ -2,44 +2,58 @@ import 'dart:io';
 
 import 'package:news_app/app/core/constants/constants.dart';
 import 'package:news_app/app/core/resources/data_state.dart';
+import 'package:news_app/app/features/display_news/data/data_sources/local/loca_news_api_services.dart';
 import 'package:news_app/app/features/display_news/data/data_sources/remote/news_api_services.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/domain/entities/article.dart';
 import 'package:news_app/app/features/display_news/domain/repository/article_repository.dart';
 import 'package:dio/dio.dart';
 
-class ArticleRepositoryImpl {
-  // final NewsApiService _newsApiService;
+class ArticleRepositoryImpl implements ArticleRepository {
+  final NewsApiService _newsApiService = NewsApiService();
   //ArticleRepositoryRepositoryImpl(this._newsApiService);
-  //@override
+
+  @override
   Future<DataState<List<dynamic>>> getNewsArticles() async {
-    var dio = Dio();
+    Response httpResponse = await _newsApiService.getNewsArticles();
+    print(httpResponse);
 
-    final response = await dio.get(
-        'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9b4791ffa29b4365a7db0cc3b0a97843');
-    //print(response.data['articles']);
-    //ArticleModel article =
-    //ArticleModel.fromJson(response.data['articles'][0]);
-    var httpResponse = response.data['articles']
-        .map((json) => ArticleModel.fromJson(json))
-        .toList();
-
-    print(httpResponse.runtimeType);
-    // final httpResponse = await _newsApiService.getNewsArticles(
-    // apiKey: newsAPIBaseURL,
-    //  country: country,
-    //  category: category,
-    //  );
-    //var c = print(response.statusMessage == 'OK');
-    if (response.statusMessage == 'OK') {
-      // print(response.data);
-      return DataSuccess(httpResponse);
+    if (httpResponse.statusCode == 200) {
+      var articles = httpResponse.data['articles']
+          .map((json) => ArticleModel.fromJson(json))
+          .toList();
+      return DataSuccess(articles);
     } else {
       return DataFailed(DioException(
-          error: httpResponse.response.statusMessage,
-          response: httpResponse.response,
+          error: httpResponse.statusMessage,
+          response: httpResponse,
           type: DioExceptionType.badResponse,
-          requestOptions: httpResponse.response.requestOptions));
+          requestOptions: httpResponse.requestOptions));
+    }
+  }
+
+  @override
+  Future<DataState<List<dynamic>>> getSavedArticles() async {
+    var articles = await LocalNewsApiServices().getArticleNews();
+    return articles;
+  }
+
+  @override
+  Future<DataState<List>> getSearchArticles(String search) async {
+    Response httpResponse = await _newsApiService.SearchArticles(search);
+    print(httpResponse);
+
+    if (httpResponse.statusCode == 200) {
+      var articles = httpResponse.data['articles']
+          .map((json) => ArticleModel.fromJson(json))
+          .toList();
+      return DataSuccess(articles);
+    } else {
+      return DataFailed(DioException(
+          error: httpResponse.statusMessage,
+          response: httpResponse,
+          type: DioExceptionType.badResponse,
+          requestOptions: httpResponse.requestOptions));
     }
   }
 }

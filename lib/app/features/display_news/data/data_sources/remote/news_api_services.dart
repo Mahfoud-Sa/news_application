@@ -1,25 +1,27 @@
-// import 'package:news_app/app/core/constants/constants.dart';
-// import 'package:news_app/app/features/display_news/data/modules/article.dart';
-// import 'package:retrofit/http.dart';
-// import 'package:retrofit/retrofit.dart';
-// import 'package:json_annotation/json_annotation.dart';
-// import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:news_app/app/core/constants/constants.dart';
+import 'package:news_app/app/core/resources/data_state.dart';
+import 'package:news_app/app/features/display_news/data/modules/article.dart';
+import 'package:retrofit/dio.dart';
+import 'package:build_daemon/constants.dart';
 
-// part 'news_api_service.g.dart';
+class NewsApiService {
+  var dio = Dio();
+//dio.options.connect
+  //factory NewsApiService(Dio dio, {String baseUrl}) = _NewsApiServices;
 
-// @RestApi(baseUrl: newsAPIBaseURL)
-// abstract class NewsApiService {
-//   factory NewsApiService(Dio dio) = _NewsApiServices;
+  //get all articles
+  Future<Response> getNewsArticles() async {
+    Response response = await dio.get('${newsAPIBaseURL}/everything',
+        queryParameters: {'apiKey': apiKey, 'q': 'donkey'});
+    //print(response);
+    return response;
+  }
 
-//   @GET('/top-headlings')
-//   Future<HttpResponse<List<ArticleModel>>>getNewsArticles(
-//     {
-//       @Query('apiKey') String ? apiKey,
-//       @Query('country') String ? country,
-//       @Query('category') String ? category,
-     
-      
-//     }
-//   )
-
-// }
+  // search article
+  Future<Response> SearchArticles(String search) async {
+    Response response = await dio.get('${newsAPIBaseURL}/everything',
+        queryParameters: {'apiKey': apiKey, 'q': search});
+    return response;
+  }
+}

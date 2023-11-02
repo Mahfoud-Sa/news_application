@@ -41,7 +41,7 @@
 //     )
 //             .compose(
 //               _dio.options,
-//               '/top-headinglines',
+//               '/everything',
 //               queryParameters: queryParameters,
 //               data: _data,
 //             )
