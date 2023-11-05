@@ -11,27 +11,14 @@ class GetAllArticles extends RemoteArticleEvent {
   const GetAllArticles();
 }
 
-class GetSportArticles extends RemoteArticleEvent {
-  const GetSportArticles();
-}
+class GetCategoryArticles extends RemoteArticleEvent {
+  final String category;
 
-class GetAnimalesArticles extends RemoteArticleEvent {
-  const GetAnimalesArticles();
-}
-
-class GetTechnologyArticles extends RemoteArticleEvent {
-  const GetTechnologyArticles();
-}
-
-class GetHealthArticles extends RemoteArticleEvent {
-  const GetHealthArticles();
-}
-
-class GetFundsArticles extends RemoteArticleEvent {
-  const GetFundsArticles();
+  const GetCategoryArticles(this.category);
 }
 
 class GetSearchArticles extends RemoteArticleEvent {
   final String search;
-  const GetSearchArticles(this.search);
+  final String category;
+  const GetSearchArticles(this.search, this.category);
 }

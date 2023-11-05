@@ -35,7 +35,7 @@ class ArticleModel extends ArticleEntity {
         source: SourceModel.fromJson(json["source"]),
         author: json["author"] ?? "Unknewn",
         title: json["title"] ?? "Unknewn",
-        descripution: json["descripution"] ?? "Unknewn",
+        descripution: json["description"] ?? "Unknewn",
         url: json["url"] ?? "Unknewn",
         urlToImage: json["urlToImage"] ?? "Unknewn",
         publishedAt: json["publishedAt"],

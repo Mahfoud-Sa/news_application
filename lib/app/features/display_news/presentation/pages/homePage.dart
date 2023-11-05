@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icons_flutter/icons_flutter.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
@@ -33,11 +34,11 @@ class _HomePageState extends State<HomePage> {
       drawer: const Drawer(),
       body: ListView(
         children: [
-          const SearchWidget(),
+          SearchWidget(),
           const SizedBox(
             height: 40,
           ),
-          const _categorySection(),
+          _categorySection(),
           const SizedBox(
             height: 40,
           ),
@@ -108,7 +109,7 @@ class NewsCardWidget extends StatelessWidget {
                 height: 100,
                 width: 120,
                 placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
+                    const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) =>
                     Image.asset('assets/images/error_imag.jpg'),
               ),
@@ -143,7 +144,41 @@ class NewsCardWidget extends StatelessWidget {
 }
 
 class _categorySection extends StatelessWidget {
-  const _categorySection({
+  final items = [
+    category.Category(
+      name: 'Sport',
+      icon: Icon(
+        FontAwesome.space_shuttle,
+        color: Colors.black,
+      ),
+      color: const Color.fromARGB(255, 68, 255, 146),
+    ),
+    category.Category(
+      name: 'Technology',
+      icon: const Icon(
+        FontAwesome.laptop,
+        color: Colors.black,
+      ),
+      color: Colors.amber,
+    ),
+    category.Category(
+      name: 'Health',
+      icon: const Icon(
+        FontAwesome.hospital_o,
+        color: Colors.black,
+      ),
+      color: Colors.blueAccent,
+    ),
+    category.Category(
+      name: 'Funds',
+      icon: const Icon(
+        FontAwesome.money,
+        color: Colors.black,
+      ),
+      color: Colors.orange,
+    ),
+  ];
+  _categorySection({
     super.key,
   });
 
@@ -163,44 +198,20 @@ class _categorySection extends StatelessWidget {
         Container(
           height: 150,
           //color: Colors.green,
-          child: ListView(
+          child: ListView.separated(
+            itemCount: 4,
+            separatorBuilder: (context, index) => SizedBox(
+              width: 10,
+            ),
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            children: [
-              category.Category(
-                name: 'Sport',
-                icon: Icon(
-                  Icons.newspaper,
-                  color: Colors.black,
-                ),
-              ),
-              category.Category(
-                name: 'Technology',
-                icon: const Icon(
-                  Icons.integration_instructions,
-                  color: Colors.black,
-                ),
-              ),
-              category.Category(
-                name: 'Money',
-                icon: const Icon(
-                  Icons.catching_pokemon,
-                  color: Colors.black,
-                ),
-              ),
-              category.Category(
-                name: 'Country',
-                icon: const Icon(
-                  Icons.catching_pokemon,
-                  color: Colors.black,
-                ),
-              ),
-            ]
-                .map((e) => categoryWidget(
-                      name: e.name,
-                      icon: e.icon,
-                    ))
-                .toList(),
+            padding: EdgeInsets.all(10),
+            itemBuilder: (context, index) {
+              return categoryWidget(
+                name: items[index].name,
+                icon: items[index].icon,
+                color: items[index].color,
+              );
+            },
           ),
         ),
       ],
@@ -211,44 +222,40 @@ class _categorySection extends StatelessWidget {
 class categoryWidget extends StatelessWidget {
   final String name;
   final Icon icon;
+  final Color color;
 
   const categoryWidget({
     super.key,
     required this.name,
     required this.icon,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        BlocProvider.of<RemoteArticleBloc>(context)
-            .add(GetSearchArticles(name));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10),
-        height: 50,
-        width: 120,
-        decoration: BoxDecoration(
-            color: Colors.amber, borderRadius: BorderRadius.circular(15)),
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            fixedSize: const Size(125, 50),
+            backgroundColor: color),
+        onPressed: () {
+          BlocProvider.of<RemoteArticleBloc>(context)
+              .add(GetCategoryArticles(name));
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(50)),
-              child: Padding(padding: const EdgeInsets.all(12.0), child: icon),
+            CircleAvatar(
+              radius: 30,
+              child: icon,
             ),
             Text(
               name,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w800),
+              style: const TextStyle(color: Colors.white),
             )
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -23,7 +23,7 @@ class RemoteArticleBloc extends Bloc<RemoteArticleEvent, RemoteArticleState> {
   FutureOr<void> _ongetArticles(
       RemoteArticleEvent event, Emitter<RemoteArticleState> emit) async {
     ArticleRepositoryImpl arti = ArticleRepositoryImpl();
-
+    emit(RemoteArticlesLoading());
     if (event is GetAllArticles) {
       var articles = await arti.getNewsArticles();
       if (articles is DataSuccess) {
@@ -35,6 +35,16 @@ class RemoteArticleBloc extends Bloc<RemoteArticleEvent, RemoteArticleState> {
       }
     } else if (event is GetSearchArticles) {
       var articles = await arti.getSearchArticles(event.search);
+
+      if (articles is DataSuccess) {
+        emit(RemoteArticlesDone(articles.data!));
+      } else if (articles is DataFailed) {
+        emit(RemoteArticlesException(articles.error));
+      } else {
+        emit(RemoteArticlesLoading());
+      }
+    } else if (event is GetCategoryArticles) {
+      var articles = await arti.getSearchArticles(event.category);
 
       if (articles is DataSuccess) {
         emit(RemoteArticlesDone(articles.data!));
