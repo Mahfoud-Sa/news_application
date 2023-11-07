@@ -12,6 +12,6 @@ class GetArticleUseCase implements UseCase<DataState<List<dynamic>>, void> {
   GetArticleUseCase();
   @override
   Future<DataState<List<dynamic>>> call({void params}) {
-    return _articleRepository.getNewsArticles();
+    return _articleRepository.getSearchArticles('adsfg');
   }
 }

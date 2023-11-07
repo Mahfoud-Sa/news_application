@@ -6,8 +6,10 @@ import 'package:news_app/app/features/display_news/presentation/bloc/article_blo
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 
 class SearchWidget extends StatefulWidget {
+  final String search;
   SearchWidget({
     super.key,
+    required this.search,
   });
 
   @override
@@ -61,6 +63,11 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   final _searchController = TextEditingController();
   int selectedCategory = 0;
+  @override
+  void initState() {
+    super.initState();
+    _searchController.text = widget.search;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,60 +94,11 @@ class _SearchWidgetState extends State<SearchWidget> {
                 prefixIcon: IconButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        BlocProvider.of<RemoteArticleBloc>(context).add(
-                            GetSearchArticles(
-                                categoryList[selectedCategory].name,
-                                _searchController.text));
+                        BlocProvider.of<RemoteArticleBloc>(context)
+                            .add(GetSearchArticles(_searchController.text));
                       }
                     },
                     icon: const Icon(Icons.search)),
-                suffixIcon: SizedBox(
-                  width: categoryList[0].name.length.toDouble() + 130,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const VerticalDivider(
-                          indent: 10,
-                          endIndent: 10,
-                          thickness: 0.1,
-                          color: Colors.black,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: DropdownButton(
-                              value: selectedCategory,
-                              items: [
-                                DropdownMenuItem(
-                                    value: 0,
-                                    child: Text(categoryList[0].name)),
-                                DropdownMenuItem(
-                                    value: 1,
-                                    child: Text(categoryList[1].name)),
-                                DropdownMenuItem(
-                                    value: 2,
-                                    child: Text(
-                                      categoryList[2].name,
-                                      overflow: TextOverflow.fade,
-                                    )),
-                                DropdownMenuItem(
-                                    value: 3,
-                                    child: Text(categoryList[3].name)),
-                                DropdownMenuItem(
-                                    value: 4,
-                                    child: Text(categoryList[4].name)),
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedCategory = value!;
-                                });
-                              },
-                              icon: categoryList[selectedCategory].icon),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding: const EdgeInsets.all(15),

@@ -18,6 +18,6 @@ class RemoteArticlesDone extends RemoteArticleState {
 }
 
 class RemoteArticlesException extends RemoteArticleState {
-  final errorMessage;
+  final DioException errorMessage;
   RemoteArticlesException(this.errorMessage);
 }

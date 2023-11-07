@@ -34,6 +34,8 @@ dependencies:
   json_annotation: ^4.8.1
   ionicons: ^0.2.2
   icons_flutter: ^0.0.4
+  url_launcher: ^6.2.1
+  word_generator: ^0.4.3
   flutter:
     sdk: flutter
   

@@ -12,7 +12,7 @@ class ArticleModel extends ArticleEntity {
   final String? descripution;
   final String? url;
   final String? urlToImage;
-  final String? publishedAt;
+  final DateTime? publishedAt;
   final String? content;
 
   const ArticleModel({
@@ -38,7 +38,7 @@ class ArticleModel extends ArticleEntity {
         descripution: json["description"] ?? "Unknewn",
         url: json["url"] ?? "Unknewn",
         urlToImage: json["urlToImage"] ?? "Unknewn",
-        publishedAt: json["publishedAt"],
+        publishedAt: DateTime.parse(json["publishedAt"]),
         content: json["content"] ?? "Unknewn",
       );
 }

@@ -9,6 +9,7 @@ import 'package:news_app/app/features/display_news/presentation/bloc/article_sta
 import 'package:news_app/app/features/display_news/presentation/pages/news_page_detailes.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/search_widget.dart';
 import 'package:news_app/app/core/resources/category.dart' as category;
+import 'package:word_generator/word_generator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,9 +19,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String search = '';
   @override
   void initState() {
-    BlocProvider.of<RemoteArticleBloc>(context).add(const GetAllArticles());
+    final wordGenerator = WordGenerator();
+    String noun = wordGenerator.randomNoun();
+    search = noun;
+    BlocProvider.of<RemoteArticleBloc>(context).add(GetSearchArticles(noun));
     super.initState();
   }
 
@@ -31,14 +36,13 @@ class _HomePageState extends State<HomePage> {
         title: const Text('News Application'),
         centerTitle: true,
       ),
-      drawer: const Drawer(),
       body: ListView(
         children: [
-          SearchWidget(),
-          const SizedBox(
+          SearchWidget(search: search),
+          /* const SizedBox(
             height: 40,
           ),
-          _categorySection(),
+           _categorySection(),*/
           const SizedBox(
             height: 40,
           ),
@@ -55,19 +59,36 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<RemoteArticleBloc, RemoteArticleState>(
               builder: (_, state) {
             if (state is RemoteArticlesDone) {
-              return ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.data!.length,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return NewsCardWidget(
-                    article: state.data[index],
-                  );
-                },
-              );
+              if (state.data.isEmpty) {
+                return Text('Nothing to show');
+              } else {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.data!.length,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    return NewsCardWidget(
+                      article: state.data[index],
+                    );
+                  },
+                );
+              }
+            } else if (state is RemoteArticlesException) {
+              return Center(
+                  child: Column(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        BlocProvider.of<RemoteArticleBloc>(context)
+                            .add(GetSearchArticles(search));
+                      },
+                      icon: const Icon(Icons.refresh)),
+                  SizedBox(width: 160, child: Text('No internet connection')),
+                ],
+              ));
             } else {
               return const Center(child: CircularProgressIndicator());
             }
@@ -102,6 +123,8 @@ class NewsCardWidget extends StatelessWidget {
         },
         child: Card(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CachedNetworkImage(
                 imageUrl: article.urlToImage!,
@@ -113,27 +136,33 @@ class NewsCardWidget extends StatelessWidget {
                 errorWidget: (context, url, error) =>
                     Image.asset('assets/images/error_imag.jpg'),
               ),
-              const SizedBox(
+              SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 200,
-                    child: Text(
-                      article.title!,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: Text(
+                        article.title!,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
+                    Text(
+                      article.author!,
                       style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.ellipsis,
+                        fontSize: 12,
+                        overflow: TextOverflow.fade,
+                      ),
                       maxLines: 2,
                     ),
-                  ),
-                  Text(
-                    article.author!,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
           ),
@@ -145,6 +174,13 @@ class NewsCardWidget extends StatelessWidget {
 
 class _categorySection extends StatelessWidget {
   final items = [
+    category.Category(
+        name: 'All',
+        icon: Icon(
+          Icons.category,
+          color: Colors.black,
+        ),
+        color: Color.fromARGB(255, 202, 29, 95)),
     category.Category(
       name: 'Sport',
       icon: Icon(
@@ -199,12 +235,12 @@ class _categorySection extends StatelessWidget {
           height: 150,
           //color: Colors.green,
           child: ListView.separated(
-            itemCount: 4,
-            separatorBuilder: (context, index) => SizedBox(
+            itemCount: 5,
+            separatorBuilder: (context, index) => const SizedBox(
               width: 10,
             ),
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             itemBuilder: (context, index) {
               return categoryWidget(
                 name: items[index].name,
@@ -240,10 +276,7 @@ class categoryWidget extends StatelessWidget {
             ),
             fixedSize: const Size(125, 50),
             backgroundColor: color),
-        onPressed: () {
-          BlocProvider.of<RemoteArticleBloc>(context)
-              .add(GetCategoryArticles(name));
-        },
+        onPressed: () {},
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
