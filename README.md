@@ -1,16 +1,27 @@
-# news_app
+# News Application
 
-A new Flutter project.
+## search engine for news over multible of sources 
+this project is search over multable of news sources over the internet 
+and list them accourding to the lastest published
+* full discripution about the news
+* a link to the sources directly to the website
 
-## Getting Started
+# screenShots
+![Screenshot_1699362911](https://github.com/Mahfoud-Sa/news_application/assets/76104809/efc7a4eb-61a9-4885-95be-b9a1fb474bed)
+![Screenshot_1699362918](https://github.com/Mahfoud-Sa/news_application/assets/76104809/16f8f49e-332f-4687-b7e3-f92333632155)
+![Screenshot_1699362902](https://github.com/Mahfoud-Sa/news_application/assets/76104809/c6726ee8-8a49-4867-b6b7-dfb7e8600b10)
 
-This project is a starting point for a Flutter application.
+# keywords
+* clean artchiture
+* DIO
+* Bloc
+* Dependency injection
+# sources
+* https://medium.com/@samra.sajjad0001/flutter-clean-architecture-5de5e9b8d093
+* https://www.youtube.com/watch?v=7V_P6dovixg
+# Api
+* https://newsapi.org/
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# contact us
+* 770266408 whatsApp
+* binsabbah2013@gmail.com E-mail
