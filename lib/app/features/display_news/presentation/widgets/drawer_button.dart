@@ -4,19 +4,25 @@ import 'package:news_app/app/features/display_news/presentation/pages/setting_pa
 class DrawerBtn extends StatelessWidget {
   final String label;
   final IconData icon;
-  Function myAction;
+  Widget Page;
 
   DrawerBtn({
     super.key,
     required this.label,
     required this.icon,
-    required this.myAction,
+    required this.Page,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: myAction(),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Page,
+            ));
+      },
       child: Container(
         height: 60,
         width: 250,
