@@ -2,7 +2,6 @@ import 'package:news_app/app/core/resources/data_state.dart';
 import 'package:news_app/app/features/display_news/data/data_sources/remote/news_api_services.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/domain/repository/article_repository.dart';
-import 'package:dio/dio.dart';
 
 class ArticleRepositoryImpl implements ArticleRepository {
   final NewsApiService _newsApiService = NewsApiService();

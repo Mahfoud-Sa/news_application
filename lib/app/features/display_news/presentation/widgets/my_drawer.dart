@@ -26,7 +26,13 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              children: [],
+              children: [
+                DrawerBtn(
+                  label: 'Setting',
+                  icon: Icons.settings,
+                  Page: SettingPage(),
+                )
+              ],
             ),
           )
         ],

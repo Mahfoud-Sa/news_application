@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:news_app/app/core/constants/constants.dart';
 import 'package:news_app/app/core/resources/data_state.dart';
 
@@ -9,10 +8,10 @@ class NewsApiService {
   Future<DataState> searchArticles(String search) async {
     Response response;
     try {
-      response = await dio.get('${newsAPIBaseURL}/everything',
+      response = await dio.get('$newsAPIBaseURL/everything',
           queryParameters: {'apiKey': apiKey, 'q': search});
 
-      print(response);
+      // print(response);
       if (response.statusCode == 200) {
         return DataSuccess(response.data);
       } else {

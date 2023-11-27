@@ -7,11 +7,11 @@ import 'package:news_app/app/features/display_news/presentation/bloc/article_blo
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_state.dart';
 import 'package:news_app/app/features/display_news/presentation/pages/news_page_detailes.dart';
-import 'package:news_app/app/features/display_news/presentation/widgets/drawer_button.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/my_drawer.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/search_widget.dart';
 import 'package:news_app/app/core/resources/category.dart' as category;
 import 'package:word_generator/word_generator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,10 +35,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News Application'),
+        title: Text(AppLocalizations.of(context)!.newsApplication),
         centerTitle: true,
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: ListView(
         children: [
           SearchWidget(search: search),
@@ -63,12 +63,12 @@ class _HomePageState extends State<HomePage> {
               builder: (_, state) {
             if (state is RemoteArticlesDone) {
               if (state.data.isEmpty) {
-                return Text('Nothing to show');
+                return const Text('Nothing to show');
               } else {
                 return ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.data!.length,
+                  itemCount: state.data.length,
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 10,
                   ),
