@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/app/features/display_news/presentation/pages/setting_page.dart';
+import 'package:news_app/app/features/app_setting/presentation/pages/setting_page.dart';
 
 class DrawerBtn extends StatelessWidget {
   final String label;

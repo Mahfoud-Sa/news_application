@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/app/features/display_news/presentation/pages/setting_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/app/features/app_setting/data/datasources/local_storage_services.dart';
+import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_bloc.dart';
+import 'package:news_app/app/features/app_setting/presentation/pages/setting_page.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/drawer_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -15,11 +19,11 @@ class MyDrawer extends StatelessWidget {
         children: [
           _closeSection(),
           //title
-          const Padding(
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'News Application',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              AppLocalizations.of(context)!.newsApplication,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ),
           //buttons
@@ -28,9 +32,15 @@ class MyDrawer extends StatelessWidget {
             child: Column(
               children: [
                 DrawerBtn(
-                  label: 'Setting',
+                  label: AppLocalizations.of(context)!.setting,
                   icon: Icons.settings,
-                  Page: SettingPage(),
+                  Page: BlocBuilder<AppSettingBloc, AppSettingState>(
+                    builder: (context, state) {
+                      return SettingPage(
+                        language: state.language,
+                      );
+                    },
+                  ),
                 )
               ],
             ),

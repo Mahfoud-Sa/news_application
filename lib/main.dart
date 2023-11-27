@@ -14,7 +14,7 @@ void main() async {
 
   await initializationDependencies();
   //applicationLanguage;
-  print(applicationLanguage);
+  //print(applicationLanguage);
   runApp(MyApp(appLanguage: applicationLanguage));
 }
 

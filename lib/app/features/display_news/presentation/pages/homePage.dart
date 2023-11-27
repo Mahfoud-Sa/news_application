@@ -49,11 +49,11 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 40,
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 15.0, bottom: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0, bottom: 10),
             child: Text(
-              'Last News',
-              style: TextStyle(
+              AppLocalizations.of(context)!.lastNews,
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),

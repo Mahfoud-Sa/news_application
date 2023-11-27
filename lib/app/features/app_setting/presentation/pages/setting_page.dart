@@ -4,23 +4,32 @@ import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+  final String language;
+
+  const SettingPage({super.key, required this.language});
   @override
   State<SettingPage> createState() => _SettingPageState();
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool language = false;
+  String language = 'en';
+
+  @override
+  void initState() {
+    language = widget.language;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Setting',
-          style: TextStyle(fontSize: 22),
+        title: Text(
+          AppLocalizations.of(context)!.setting,
+          style: const TextStyle(fontSize: 22),
         ),
       ),
       body: Container(
@@ -33,38 +42,40 @@ class _SettingPageState extends State<SettingPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.language,
                       color: Colors.blue,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      'Language ',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      AppLocalizations.of(context)!.language,
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                Switch(
+                DropdownButton(
+                    icon: const Icon(Icons.menu),
                     value: language,
-                    onChanged: (value) async {
+                    items: const [
+                      DropdownMenuItem(value: 'ar', child: Text('عربي')),
+                      DropdownMenuItem(value: 'en', child: Text('English')),
+                    ],
+                    onChanged: (value) {
                       setState(() {
-                        language = !language;
+                        language = value!;
                       });
-                      BlocProvider.of<AppSettingBloc>(context).add(
-                          ChangeLanguage(language: language ? 'ar' : 'en'));
 
-                      // SharedPreferences localStorage =
-                      //     await SharedPreferences.getInstance();
-                      // localStorage.setString("applicationLanguage", 'ar');
-                    })
+                      BlocProvider.of<AppSettingBloc>(context)
+                          .add(ChangeLanguage(language: language));
+                    }),
               ],
             ),
-            Divider(
+            const Divider(
               height: 20,
               thickness: 1,
             )
