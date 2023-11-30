@@ -2,6 +2,7 @@
     "newsApplication": "تطبيق الاخبار",
     "lastNews": "اخر الاخبار",
     "setting": "الاعدادات",
-    "language": "اللغة"
-
+    "language": "اللغة",
+    "author":"الناشر"
+,"clickForMoreDetailes":"اضغك هنا للمزيد من التفاصيل"
 }

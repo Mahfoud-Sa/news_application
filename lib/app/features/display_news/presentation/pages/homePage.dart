@@ -14,7 +14,8 @@ import 'package:word_generator/word_generator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String Language;
+  const HomePage({super.key, required this.Language});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final wordGenerator = WordGenerator();
-    String noun = wordGenerator.randomNoun();
+    String noun = wordGenerator.randomNounByLanguage(widget.Language);
     search = noun;
     BlocProvider.of<RemoteArticleBloc>(context).add(GetSearchArticles(noun));
     super.initState();

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsDetailes extends StatelessWidget {
   final ArticleModel article;
@@ -43,7 +44,7 @@ class NewsDetailes extends StatelessWidget {
                   style: const TextStyle(fontSize: 14),
                 ),
                 Text(
-                  "Author: ${article.author}",
+                  "${AppLocalizations.of(context)!.author}: ${article.author}",
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.bold),
                 ),
@@ -54,7 +55,7 @@ class NewsDetailes extends StatelessWidget {
                       }
                     },
                     child: Text(
-                      "${article.publishedAt!.year}/${article.publishedAt!.month}/${article.publishedAt!.hour}  Double Click for more Detailes ${article.source!.name} >>",
+                      "${article.publishedAt!.year}/${article.publishedAt!.month}/${article.publishedAt!.hour}  ${AppLocalizations.of(context)!.clickForMoreDetailes} ${article.source!.name} >>",
                       style: const TextStyle(
                           fontSize: 12, color: Color.fromARGB(157, 90, 87, 62)),
                     )),

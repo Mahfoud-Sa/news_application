@@ -5,7 +5,6 @@ import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_
 import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/pages/homePage.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/initialization_dependencies.dart';
 
@@ -47,7 +46,9 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
               ),
               locale: Locale(state.language),
-              home: const HomePage(),
+              home: HomePage(
+                Language: state.language,
+              ),
             );
           },
         ));

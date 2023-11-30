@@ -9,6 +9,7 @@ part 'app_setting_state.dart';
 class AppSettingBloc extends Bloc<AppSettingEvent, AppSettingState> {
   AppSettingRepositoryImp repo = AppSettingRepositoryImp();
   String appLanguage;
+
   AppSettingBloc({required this.appLanguage})
       : super(AppSettingInitial(language: appLanguage)) {
     on<AppSettingEvent>((event, emit) async {
