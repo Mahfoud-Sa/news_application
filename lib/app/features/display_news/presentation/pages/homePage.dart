@@ -10,6 +10,7 @@ import 'package:news_app/app/features/display_news/presentation/pages/news_page_
 import 'package:news_app/app/features/display_news/presentation/widgets/my_drawer.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/search_widget.dart';
 import 'package:news_app/app/core/resources/category.dart' as category;
+import 'package:news_app/app/features/favorite_news/presentation/widgets/favorite_btn.dart';
 import 'package:word_generator/word_generator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             height: 40,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 15.0, bottom: 10),
+            padding: const EdgeInsets.only(left: 15.0, bottom: 10, right: 15),
             child: Text(
               AppLocalizations.of(context)!.lastNews,
               style: const TextStyle(
@@ -147,6 +148,7 @@ class NewsCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Align(alignment: Alignment.topLeft, child: FavoriteBtn()),
                     SizedBox(
                       width: 200,
                       child: Text(
