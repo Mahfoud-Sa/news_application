@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final wordGenerator = WordGenerator();
-    String noun = wordGenerator.randomNounByLanguage(widget.Language);
+    String noun = wordGenerator.randomName();
     search = noun;
     BlocProvider.of<RemoteArticleBloc>(context).add(GetSearchArticles(noun));
     super.initState();
@@ -148,7 +148,11 @@ class NewsCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(alignment: Alignment.topLeft, child: FavoriteBtn()),
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: FavoriteBtn(
+                          articleEntity: article,
+                        )),
                     SizedBox(
                       width: 200,
                       child: Text(

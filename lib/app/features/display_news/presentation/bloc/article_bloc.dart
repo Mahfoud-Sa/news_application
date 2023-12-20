@@ -18,6 +18,7 @@ class RemoteArticleBloc extends Bloc<RemoteArticleEvent, RemoteArticleState> {
     if (event is GetSearchArticles) {
       var articles = await arti.getSearchArticles(event.search);
       if (articles is DataSuccess && articles.data!.isNotEmpty) {
+        print(articles.data);
         emit(RemoteArticlesDone(articles.data!));
       } else if (articles is DataFailed) {
         emit(RemoteArticlesException(articles.error));
