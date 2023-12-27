@@ -12,7 +12,7 @@ class NewsDetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //  title: Text(article.source!.name.toString()),
+        title: Text(article.source!.name.toString()),
         centerTitle: true,
       ),
       body: ListView(

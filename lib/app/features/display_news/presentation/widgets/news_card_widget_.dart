@@ -1,18 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:news_app/app/core/resources/app_database.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
+import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:news_app/app/features/display_news/presentation/pages/news_page_detailes.dart';
-import 'package:news_app/app/features/favorite_news/presentation/widgets/favorite_btn.dart';
-import 'package:news_app/initialization_dependencies.dart';
+import 'package:news_app/app/features/display_news/presentation/widgets/favorite_btn.dart';
 
-class FavoriteNewsCardWidget extends StatelessWidget {
+class NewsCardWidget extends StatelessWidget {
   final ArticleModel article;
-
-  const FavoriteNewsCardWidget({
+  final ArticleEvent articleEvent;
+  const NewsCardWidget({
     super.key,
     required this.article,
+    required this.articleEvent,
   });
 
   @override
@@ -44,7 +43,7 @@ class FavoriteNewsCardWidget extends StatelessWidget {
                 errorWidget: (context, url, error) =>
                     Image.asset('assets/images/error_imag.jpg'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Expanded(
@@ -53,8 +52,9 @@ class FavoriteNewsCardWidget extends StatelessWidget {
                   children: [
                     Align(
                         alignment: Alignment.topRight,
-                        child: DropBtn(
-                          article_id: article.id!,
+                        child: FavoriteBtn(
+                          articleEntity: article,
+                          event: articleEvent,
                         )),
                     SizedBox(
                       width: 200,
@@ -81,36 +81,6 @@ class FavoriteNewsCardWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class DropBtn extends StatefulWidget {
-  final int article_id;
-  const DropBtn({super.key, required this.article_id});
-
-  @override
-  State<DropBtn> createState() => _DropBtnState();
-}
-
-class _DropBtnState extends State<DropBtn> {
-  bool isFavorite = true;
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        isFavorite ? Icons.favorite : Icons.delete,
-        color: isFavorite ? Colors.red : null,
-      ),
-      onPressed: () async {
-        setState(() {
-          isFavorite = !isFavorite;
-        });
-
-        var _AppDataBaseServices = await getIt.get<AppDataBaseServices>();
-        print(await _AppDataBaseServices.articleDao
-            .deletetArticle(widget.article_id));
-      },
     );
   }
 }

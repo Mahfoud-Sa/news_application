@@ -21,7 +21,7 @@ Future<void> initializationDependencies() async {
   var _AppDataBaseServices = await getIt.get<AppDataBaseServices>();
   await _AppDataBaseServices.articleDao.getAll();
 
-  // _AppDataBaseServices.articleDao.insertArticle(ArticleModel(
+  // print(await _AppDataBaseServices.articleDao.insertArticle(ArticleModel(
   //   source: const SourceModel(id: '2', name: 'sultain'),
   //   author: 'CNN',
   //   title: 'Samsung',
@@ -32,5 +32,5 @@ Future<void> initializationDependencies() async {
   //       'https://th.bing.com/th/id/OIP.7V4xLOup-MrOUTgvKLoNTgHaEH?rs=1&pid=ImgDetMain',
   //   publishedAt: DateTime.now(),
   //   //  content: article.content,
-  // ));
+  // )));
 }

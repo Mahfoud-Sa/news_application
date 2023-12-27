@@ -5,7 +5,7 @@ import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_
 import 'package:news_app/app/features/app_setting/presentation/pages/setting_page.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/drawer_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:news_app/app/features/favorite_news/presentation/pages/favorite_page.dart';
+import 'package:news_app/app/features/display_news/presentation/pages/favorite_page.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({

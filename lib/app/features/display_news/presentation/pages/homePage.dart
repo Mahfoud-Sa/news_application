@@ -1,16 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_flutter/icons_flutter.dart';
-import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_state.dart';
-import 'package:news_app/app/features/display_news/presentation/pages/news_page_detailes.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/my_drawer.dart';
+import 'package:news_app/app/features/display_news/presentation/widgets/news_card_widget_.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/search_widget.dart';
 import 'package:news_app/app/core/resources/category.dart' as category;
-import 'package:news_app/app/features/favorite_news/presentation/widgets/favorite_btn.dart';
 import 'package:word_generator/word_generator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,155 +26,92 @@ class _HomePageState extends State<HomePage> {
     final wordGenerator = WordGenerator();
     String noun = wordGenerator.randomName();
     search = noun;
-    BlocProvider.of<RemoteArticleBloc>(context).add(GetSearchArticles(noun));
+    BlocProvider.of<ArticleBloc>(context).add(GetSearchArticles(noun));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.newsApplication),
-        centerTitle: true,
-      ),
+      appBar: _buildAppbar(context),
       drawer: const MyDrawer(),
-      body: ListView(
-        children: [
-          SearchWidget(search: search),
-          /* const SizedBox(
-            height: 40,
-          ),
-           _categorySection(),*/
-          const SizedBox(
-            height: 40,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, bottom: 10, right: 15),
-            child: Text(
-              AppLocalizations.of(context)!.lastNews,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-          BlocBuilder<RemoteArticleBloc, RemoteArticleState>(
-              builder: (_, state) {
-            if (state is RemoteArticlesDone) {
-              if (state.data.isEmpty) {
-                return const Text('Nothing to show');
-              } else {
-                return ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.data.length,
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 10,
-                  ),
-                  itemBuilder: (context, index) {
-                    return NewsCardWidget(
-                      article: state.data[index],
-                    );
-                  },
-                );
-              }
-            } else if (state is RemoteArticlesException) {
-              return Center(
-                  child: Column(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        BlocProvider.of<RemoteArticleBloc>(context)
-                            .add(GetSearchArticles(search));
-                      },
-                      icon: const Icon(Icons.refresh)),
-                  SizedBox(width: 160, child: Text('No internet connection')),
-                ],
-              ));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          })
-        ],
-      ),
+      body: _buildBody(context),
     );
   }
-}
 
-class NewsCardWidget extends StatelessWidget {
-  final ArticleModel article;
-
-  const NewsCardWidget({
-    super.key,
-    required this.article,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return NewsDetailes(
-                article: article,
-              );
-            },
-          ));
-        },
-        child: Card(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CachedNetworkImage(
-                imageUrl: article.urlToImage!,
-                fit: BoxFit.fill,
-                height: 100,
-                width: 120,
-                placeholder: (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) =>
-                    Image.asset('assets/images/error_imag.jpg'),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: FavoriteBtn(
-                          articleEntity: article,
-                        )),
-                    SizedBox(
-                      width: 200,
-                      child: Text(
-                        article.title!,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                    ),
-                    Text(
-                      article.author!,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        overflow: TextOverflow.fade,
-                      ),
-                      maxLines: 2,
-                    ),
-                  ],
-                ),
-              )
-            ],
+  ListView _buildBody(BuildContext context) {
+    return ListView(
+      children: [
+        //header
+        SearchWidget(search: search),
+        const SizedBox(
+          height: 40,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0, bottom: 10, right: 15),
+          child: Text(
+            AppLocalizations.of(context)!.lastNews,
+            style: const TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
-      ),
+
+        //display News
+        BlocBuilder<ArticleBloc, ArticleState>(builder: (_, state) {
+          // done state
+          if (state is ArticlesDone) {
+            //empty result
+            if (state.data.isEmpty) {
+              return const Text('Nothing to show');
+            }
+            //result
+            else {
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.data.length,
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return NewsCardWidget(
+                    article: state.data[index],
+                    articleEvent: SaveArticle(state.data[index]),
+                  );
+                },
+              );
+            }
+          }
+
+          //Exception State
+          else if (state is ArticlesException) {
+            return Center(
+                child: Column(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      BlocProvider.of<ArticleBloc>(context)
+                          .add(GetSearchArticles(search));
+                    },
+                    icon: const Icon(Icons.refresh)),
+                const SizedBox(
+                    width: 160, child: Text('No internet connection')),
+              ],
+            ));
+          }
+          //waiting State
+          else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        })
+      ],
+    );
+  }
+
+  AppBar _buildAppbar(BuildContext context) {
+    return AppBar(
+      title: Text(AppLocalizations.of(context)!.newsApplication),
+      centerTitle: true,
     );
   }
 }

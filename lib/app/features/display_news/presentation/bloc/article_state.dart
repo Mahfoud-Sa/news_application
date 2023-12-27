@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
 
-abstract class RemoteArticleState {}
+abstract class ArticleState {}
 
-class RemoteArticlesLoading extends RemoteArticleState {
-  RemoteArticlesLoading();
+class ArticlesLoading extends ArticleState {
+  ArticlesLoading();
 }
 
-class RemoteArticlesDone extends RemoteArticleState {
+class ArticlesDone extends ArticleState {
   final List<dynamic> data;
-  RemoteArticlesDone(this.data);
+  ArticlesDone(this.data);
 }
 
-class RemoteArticlesException extends RemoteArticleState {
+class ArticlesException extends ArticleState {
   final DioException errorMessage;
-  RemoteArticlesException(this.errorMessage);
+  ArticlesException(this.errorMessage);
 }

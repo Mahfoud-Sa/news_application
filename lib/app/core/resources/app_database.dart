@@ -1,7 +1,7 @@
 //import 'package:note/app/features/manage_notes/data/models/note.dart';
 //import 'package:note/app/features/manage_notes/domain/entities/note.dart';
 import 'package:news_app/app/features/display_news/domain/entities/article.dart';
-import 'package:news_app/app/features/favorite_news/data/data_source/DAO/article_dao.dart';
+import 'package:news_app/app/features/display_news/data/data_sources/local/DAO/article_dao.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';

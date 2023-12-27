@@ -10,7 +10,7 @@ class ArticleDao {
   ArticleDao({required Database AppDataBase}) : _AppDataBase = AppDataBase;
 
   //insert
-  Future<int> insertArticle(ArticleModel article) async {
+  Future<int> insertArticle(ArticleEntity article) async {
     // await _AppDataBase.insert(
     //   'sources',
     //   {
@@ -38,7 +38,7 @@ class ArticleDao {
     );
   }
 
-  getAll() async {
+  Future<List<ArticleModel>> getAll() async {
     List<Map<String, Object?>> responsive =
         await _AppDataBase.rawQuery("SELECT articles.* FROM articles ;");
     // List<Map<String, Object?>> sources =
@@ -52,7 +52,7 @@ class ArticleDao {
     // print(articles_);
     // print(articles_[0].source = SourceModel.fromJson(sources[0]));
     // print(articles_);
-    print(articles);
+    // print(articles);
     return articles;
   } // "SELECT articles.*, sources.* FROM articles INNER JOIN sources ON articles.source = sources.id;");
 

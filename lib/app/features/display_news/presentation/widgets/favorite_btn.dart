@@ -1,14 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/app/core/resources/app_database.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
-import 'package:news_app/app/features/display_news/domain/entities/article.dart';
-import 'package:news_app/initialization_dependencies.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
+import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 
 class FavoriteBtn extends StatefulWidget {
   final ArticleModel articleEntity;
-  const FavoriteBtn({super.key, required this.articleEntity});
+  final ArticleEvent event;
+  const FavoriteBtn(
+      {super.key, required this.articleEntity, required this.event});
 
   @override
   State<FavoriteBtn> createState() => _FavoriteBtnState();
@@ -27,9 +27,9 @@ class _FavoriteBtnState extends State<FavoriteBtn> {
         setState(() {
           isFavorite = !isFavorite;
         });
-
-        var _AppDataBaseServices = await getIt.get<AppDataBaseServices>();
-        _AppDataBaseServices.articleDao.insertArticle(widget.articleEntity);
+        BlocProvider.of<ArticleBloc>(context).add(widget.event);
+        // var _AppDataBaseServices = await getIt.get<AppDataBaseServices>();
+        // _AppDataBaseServices.articleDao.insertArticle(widget.articleEntity);
       },
     );
   }

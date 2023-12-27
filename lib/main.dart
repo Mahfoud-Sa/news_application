@@ -10,10 +10,7 @@ import 'package:news_app/initialization_dependencies.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await initializationDependencies();
-  //applicationLanguage;
-  //print(applicationLanguage);
   runApp(MyApp(appLanguage: applicationLanguage));
 }
 
@@ -26,8 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider<RemoteArticleBloc>(
-            create: (context) => RemoteArticleBloc(),
+          BlocProvider<ArticleBloc>(
+            create: (context) => ArticleBloc(),
           ),
           BlocProvider<AppSettingBloc>(
             create: (context) =>

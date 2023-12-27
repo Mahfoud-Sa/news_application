@@ -94,7 +94,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                 prefixIcon: IconButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        BlocProvider.of<RemoteArticleBloc>(context)
+                        BlocProvider.of<ArticleBloc>(context)
                             .add(GetSearchArticles(_searchController.text));
                       }
                     },
