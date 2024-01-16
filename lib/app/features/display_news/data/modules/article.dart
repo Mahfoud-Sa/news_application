@@ -13,7 +13,7 @@ class ArticleModel extends ArticleEntity {
   final String? descripution;
   final String? url;
   final String? urlToImage;
-  final DateTime? publishedAt;
+//  final DateTime? publishedAt;
   final String? content;
 
   //var id;
@@ -26,7 +26,7 @@ class ArticleModel extends ArticleEntity {
     this.descripution,
     this.url,
     this.urlToImage,
-    this.publishedAt,
+    // this.publishedAt,
     this.content,
   });
 
@@ -42,7 +42,7 @@ class ArticleModel extends ArticleEntity {
         descripution: json["description"] ?? "Unknewn",
         url: json["url"] ?? "Unknewn",
         urlToImage: json["urlToImage"] ?? "Unknewn",
-        publishedAt: DateTime.parse(json["publishedAt"]),
+        //   publishedAt: DateTime.parse(json["publishedAt"]),
         content: json["content"] ?? "Unknewn",
       );
 
@@ -55,7 +55,7 @@ class ArticleModel extends ArticleEntity {
         descripution: json["description"] ?? "Unknewn",
         url: json["url"] ?? "Unknewn",
         urlToImage: json["urlToImage"] ?? "Unknewn",
-        publishedAt: DateTime.parse(json["publishedAt"]),
+        // publishedAt: DateTime.parse(json["publishedAt"]),
         content: json["content"] ?? "Unknewn",
       );
 }

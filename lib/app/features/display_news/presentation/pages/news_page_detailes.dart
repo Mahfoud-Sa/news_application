@@ -55,7 +55,7 @@ class NewsDetailes extends StatelessWidget {
                       }
                     },
                     child: Text(
-                      "${article.publishedAt!.year}/${article.publishedAt!.month}/${article.publishedAt!.hour}  ${AppLocalizations.of(context)!.clickForMoreDetailes} article.source!.name} >>",
+                      "{article.publishedAt!.year}/{article.publishedAt!.month}/{article.publishedAt!.hour}  ${AppLocalizations.of(context)!.clickForMoreDetailes} article.source!.name} >>",
                       style: const TextStyle(
                           fontSize: 12, color: Color.fromARGB(157, 90, 87, 62)),
                     )),

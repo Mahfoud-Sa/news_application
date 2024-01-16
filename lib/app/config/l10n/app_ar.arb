@@ -5,4 +5,15 @@
     "language": "اللغة",
     "author":"الناشر"
 ,"clickForMoreDetailes":"اضغك هنا للمزيد من التفاصيل"
+,"nothingToShow":"لا يوجد اي شي ليتم عرضه",
+"favorite":"المفضلة",
+"fetching_data_failed":"فشل في جلب البيانات",
+"no_internet_connection":"لا يوجد اتصال بالانترنت",
+"search_news":"ابحث بالاخبار",
+"this_has_been_added_to_favorite":"تمت اضافتها للمفضلة",
+"this_is_allredy_exisit":"هذه المقالة مضافة مسبقا",
+"article_has_been_deleted_susseflly":"تم حذف المقالة بنجاح"
+
+
+
 }

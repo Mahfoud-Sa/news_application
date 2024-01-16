@@ -37,9 +37,10 @@ dependencies:
   url_launcher: ^6.2.1
   word_generator: ^0.4.3
   intl: ^0.18.1
-  flutter_localization: ^0.1.14
+  flutter_localization: ^0.2.0
   shared_preferences: ^2.2.2
   get_it: ^7.6.4
+  fluttertoast: ^8.2.4
   flutter:
     sdk: flutter
   

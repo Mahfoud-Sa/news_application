@@ -4,6 +4,7 @@ import 'package:icons_flutter/icons_flutter.dart';
 import 'package:news_app/app/core/resources/category.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchWidget extends StatefulWidget {
   final String search;
@@ -90,7 +91,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               return null;
             },
             decoration: InputDecoration(
-                hintText: 'Search News',
+                hintText: AppLocalizations.of(context)!.search_news,
                 prefixIcon: IconButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {

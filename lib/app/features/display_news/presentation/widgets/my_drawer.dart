@@ -33,7 +33,7 @@ class MyDrawer extends StatelessWidget {
             child: Column(
               children: [
                 DrawerBtn(
-                  label: 'Favorite',
+                  label: AppLocalizations.of(context)!.favorite,
                   icon: Icons.favorite,
                   Page: FavoritePage(),
                 )

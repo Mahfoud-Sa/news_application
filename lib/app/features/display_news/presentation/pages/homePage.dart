@@ -59,10 +59,12 @@ class _HomePageState extends State<HomePage> {
         //display News
         BlocBuilder<ArticleBloc, ArticleState>(builder: (_, state) {
           // done state
+
           if (state is ArticlesDone) {
             //empty result
             if (state.data.isEmpty) {
-              return const Text('Nothing to show');
+              return Center(
+                  child: Text(AppLocalizations.of(context)!.nothingToShow));
             }
             //result
             else {
@@ -82,8 +84,7 @@ class _HomePageState extends State<HomePage> {
               );
             }
           }
-
-          //Exception State
+          // Exception State
           else if (state is ArticlesException) {
             return Center(
                 child: Column(
@@ -94,15 +95,18 @@ class _HomePageState extends State<HomePage> {
                           .add(GetSearchArticles(search));
                     },
                     icon: const Icon(Icons.refresh)),
-                const SizedBox(
-                    width: 160, child: Text('No internet connection')),
+                SizedBox(
+                    width: 160,
+                    child: Center(
+                      child: Text(
+                          AppLocalizations.of(context)!.no_internet_connection),
+                    )),
               ],
             ));
           }
           //waiting State
-          else {
-            return const Center(child: CircularProgressIndicator());
-          }
+
+          return const Center(child: CircularProgressIndicator());
         })
       ],
     );

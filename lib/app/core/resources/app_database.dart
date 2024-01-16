@@ -58,11 +58,11 @@ class AppDataBaseServices {
     "description" TEXT NULL,
     "url" TEXT NULL,
     "urlToImage" TEXT NULL,
-    "publishedAt" date NULL,
     "content" TEXT NULL 
  )
 
  ''');
+    //  //  "publishedAt" String NULL,
   }
 
   create(Database? mydb, ArticleEntity article) async {
@@ -76,7 +76,7 @@ class AppDataBaseServices {
         'description': article.descripution,
         'url': article.url,
         'urlToImage': article.urlToImage,
-        'publishedAt': article.publishedAt!.toIso8601String(),
+        //   'publishedAt': article.publishedAt!.toString(),
         'content': article.content,
       },
     );

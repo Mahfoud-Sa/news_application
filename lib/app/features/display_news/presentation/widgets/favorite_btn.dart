@@ -28,8 +28,6 @@ class _FavoriteBtnState extends State<FavoriteBtn> {
           isFavorite = !isFavorite;
         });
         BlocProvider.of<ArticleBloc>(context).add(widget.event);
-        // var _AppDataBaseServices = await getIt.get<AppDataBaseServices>();
-        // _AppDataBaseServices.articleDao.insertArticle(widget.articleEntity);
       },
     );
   }

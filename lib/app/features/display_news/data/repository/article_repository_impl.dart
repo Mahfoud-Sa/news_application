@@ -44,6 +44,11 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   Future<int> saveArticle(ArticleEntity article) async {
-    return await _AppDataBaseServices.articleDao.insertArticle(article);
+    bool isExisit = await _AppDataBaseServices.articleDao.get(article) == null;
+    if (isExisit) {
+      return await _AppDataBaseServices.articleDao.insertArticle(article);
+    }
+
+    return 0;
   }
 }

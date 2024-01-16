@@ -50,12 +50,15 @@ class NewsCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: FavoriteBtn(
+                    Row(
+                      children: [
+                        const Expanded(child: SizedBox()),
+                        FavoriteBtn(
                           articleEntity: article,
                           event: articleEvent,
-                        )),
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       width: 200,
                       child: Text(

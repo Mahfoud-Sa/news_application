@@ -5,5 +5,18 @@
   
   
   "setting": "Settings",
-  "language": "Language"  ,"author":"Author","clickForMoreDetailes":"Click for more Detailes"
+  "language": "Language"  ,"author":"Author",
+  "clickForMoreDetailes":"Click for more Detailes",
+  "nothingToShow":"Nothing to showing",
+  "favorite":"Favorite",
+  "fetching_data_failed":"fetching data failed",
+  "no_internet_connection":"No Internet Connection",
+  "search_news":"Search News",
+  "this_has_been_added_to_favorite":"ths had been to the favorite",
+  "this_is_allredy_exisit":"This is Allready Exisit",
+  "article_has_been_deleted_susseflly":"Article Has Been Deleted Susseflly"
+
+
+
+
 }

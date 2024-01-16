@@ -9,7 +9,7 @@ class ArticleEntity extends Equatable {
   final String? descripution;
   final String? url;
   final String? urlToImage;
-  final DateTime? publishedAt;
+  // final DateTime? publishedAt;
   final String? content;
 
   const ArticleEntity({
@@ -19,7 +19,7 @@ class ArticleEntity extends Equatable {
     this.descripution,
     this.url,
     this.urlToImage,
-    this.publishedAt,
+    //  this.publishedAt,
     this.content,
   });
   @override
@@ -31,7 +31,7 @@ class ArticleEntity extends Equatable {
       descripution,
       url,
       urlToImage,
-      publishedAt,
+      //   publishedAt,
       content,
     ];
   }

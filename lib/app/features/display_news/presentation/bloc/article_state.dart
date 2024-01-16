@@ -15,3 +15,8 @@ class ArticlesException extends ArticleState {
   final DioException errorMessage;
   ArticlesException(this.errorMessage);
 }
+
+class MessageDone extends ArticleState {
+  final String errorMessage;
+  MessageDone(this.errorMessage);
+}

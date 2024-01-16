@@ -1,7 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:news_app/app/core/resources/app_database.dart';
-import 'package:news_app/app/features/display_news/data/modules/article.dart';
-import 'package:news_app/app/features/display_news/data/modules/source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String applicationLanguage = 'en';

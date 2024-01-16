@@ -7,6 +7,7 @@ import 'package:news_app/app/features/display_news/presentation/bloc/article_eve
 import 'package:news_app/app/features/display_news/presentation/bloc/article_state.dart';
 import 'package:news_app/app/features/display_news/presentation/widgets/news_card_widget_.dart';
 import 'package:news_app/initialization_dependencies.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FavoritePage extends StatefulWidget {
   FavoritePage({super.key});
@@ -31,13 +32,13 @@ class _FavoritePageState extends State<FavoritePage> {
           if (state is ArticlesDone) {
             //empty result
             if (state.data.isEmpty) {
-              return const Text('Nothing to show');
+              return Center(
+                  child: Text(AppLocalizations.of(context)!.nothingToShow));
             }
             //result
             else {
               return ListView.separated(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 itemCount: state.data.length,
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 10,
@@ -61,27 +62,16 @@ class _FavoritePageState extends State<FavoritePage> {
                           .add(const GetSavedArticles());
                     },
                     icon: const Icon(Icons.refresh)),
-                const SizedBox(width: 160, child: Text('fetching data failed')),
+                SizedBox(
+                    width: 160,
+                    child: Text(
+                        AppLocalizations.of(context)!.fetching_data_failed)),
               ],
             ));
           } else {
             return const Center(child: CircularProgressIndicator());
           }
         },
-        // body: FutureBuilder(
-        //   future: getArticles(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.done) {
-        //       return ListView.builder(
-        //         itemCount: snapshot.data!.length,
-        //         itemBuilder: (context, index) {
-        //           return FavoriteNewsCardWidget(article: snapshot.data![index]);
-        //         },
-        //       );
-        //     } else {
-        //       return const CircularProgressIndicator();
-        //     }
-        //   },
       ),
     );
   }
