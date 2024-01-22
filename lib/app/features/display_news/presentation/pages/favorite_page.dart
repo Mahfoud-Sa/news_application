@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/app/core/resources/app_database.dart';
+import 'package:news_app/app/core/widgets/toast_message.dart';
 import 'package:news_app/app/features/display_news/data/modules/article.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
@@ -26,53 +27,57 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: BlocBuilder<ArticleBloc, ArticleState>(
-        builder: (_, state) {
-          if (state is ArticlesDone) {
-            //empty result
-            if (state.data.isEmpty) {
+        appBar: AppBar(),
+        body: BlocConsumer<ArticleBloc, ArticleState>(
+          listener: (context, state) {
+            // if (state is MessageDone) {
+            //   ToastMessage().Infoessage(state.errorMessage);
+            // }
+          },
+          builder: (context, state) {
+            if (state is ArticlesDone) {
+              //empty result
+              if (state.data.isEmpty) {
+                return Center(
+                    child: Text(AppLocalizations.of(context)!.nothingToShow));
+              }
+              //result
+              else {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: state.data.length,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    return NewsCardWidget(
+                      article: state.data[index],
+                      articleEvent: DropArticle(state.data[index].id),
+                    );
+                  },
+                );
+              }
+            } //Exception State
+            else if (state is ArticlesException) {
               return Center(
-                  child: Text(AppLocalizations.of(context)!.nothingToShow));
+                  child: Column(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        BlocProvider.of<ArticleBloc>(context)
+                            .add(const GetSavedArticles());
+                      },
+                      icon: const Icon(Icons.refresh)),
+                  SizedBox(
+                      width: 160,
+                      child: Text(
+                          AppLocalizations.of(context)!.fetching_data_failed)),
+                ],
+              ));
+            } else {
+              return Text('asdf');
             }
-            //result
-            else {
-              return ListView.separated(
-                shrinkWrap: true,
-                itemCount: state.data.length,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return NewsCardWidget(
-                    article: state.data[index],
-                    articleEvent: DropArticle(state.data[index].id),
-                  );
-                },
-              );
-            }
-          } //Exception State
-          else if (state is ArticlesException) {
-            return Center(
-                child: Column(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      BlocProvider.of<ArticleBloc>(context)
-                          .add(const GetSavedArticles());
-                    },
-                    icon: const Icon(Icons.refresh)),
-                SizedBox(
-                    width: 160,
-                    child: Text(
-                        AppLocalizations.of(context)!.fetching_data_failed)),
-              ],
-            ));
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
+          },
+        ));
   }
 }

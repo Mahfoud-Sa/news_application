@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:icons_flutter/icons_flutter.dart';
+import 'package:news_app/app/core/widgets/toast_message.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_state.dart';
@@ -57,57 +59,71 @@ class _HomePageState extends State<HomePage> {
         ),
 
         //display News
-        BlocBuilder<ArticleBloc, ArticleState>(builder: (_, state) {
-          // done state
-
-          if (state is ArticlesDone) {
-            //empty result
-            if (state.data.isEmpty) {
+        BlocConsumer<ArticleBloc, ArticleState>(
+          buildWhen: (previous, current) {
+            return current is! SaveArticleState;
+          },
+          builder: (context, state) {
+            if (state is ArticlesDone) {
+              //empty result
+              if (state.data.isEmpty) {
+                return Center(
+                    child: Text(AppLocalizations.of(context)!.nothingToShow));
+              }
+              //result
+              else {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.data.length,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    return NewsCardWidget(
+                      article: state.data[index],
+                      articleEvent: SaveArticle(state.data[index]),
+                    );
+                  },
+                );
+              }
+            }
+            // Exception State
+            else if (state is ArticlesException) {
               return Center(
-                  child: Text(AppLocalizations.of(context)!.nothingToShow));
+                  child: Column(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        BlocProvider.of<ArticleBloc>(context)
+                            .add(GetSearchArticles(search));
+                      },
+                      icon: const Icon(Icons.refresh)),
+                  SizedBox(
+                      width: 160,
+                      child: Center(
+                        child: Text(AppLocalizations.of(context)!
+                            .no_internet_connection),
+                      )),
+                ],
+              ));
             }
-            //result
-            else {
-              return ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.data.length,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return NewsCardWidget(
-                    article: state.data[index],
-                    articleEvent: SaveArticle(state.data[index]),
-                  );
-                },
-              );
-            }
-          }
-          // Exception State
-          else if (state is ArticlesException) {
-            return Center(
-                child: Column(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      BlocProvider.of<ArticleBloc>(context)
-                          .add(GetSearchArticles(search));
-                    },
-                    icon: const Icon(Icons.refresh)),
-                SizedBox(
-                    width: 160,
-                    child: Center(
-                      child: Text(
-                          AppLocalizations.of(context)!.no_internet_connection),
-                    )),
-              ],
-            ));
-          }
-          //waiting State
 
-          return const Center(child: CircularProgressIndicator());
-        })
+            return const Center(child: CircularProgressIndicator());
+          },
+          listener: (BuildContext context, ArticleState state) {
+            if (state is SaveArticleState) {
+              if (state.status) {
+                ToastMessage().SusseccMessage(
+                  AppLocalizations.of(context)!.this_has_been_added_to_favorite,
+                );
+              } else {
+                ToastMessage().Infoessage(
+                    AppLocalizations.of(context)!.this_is_allredy_exisit);
+              }
+            }
+          },
+        )
       ],
     );
   }

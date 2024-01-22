@@ -16,7 +16,8 @@ class ArticlesException extends ArticleState {
   ArticlesException(this.errorMessage);
 }
 
-class MessageDone extends ArticleState {
-  final String errorMessage;
-  MessageDone(this.errorMessage);
+class SaveArticleState extends ArticleState {
+  final String message;
+  final bool status;
+  SaveArticleState(this.message, this.status);
 }

@@ -22,42 +22,22 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
         emit(ArticlesDone(articles.data!));
       } else if (articles is DataFailed) {
         emit(ArticlesException(articles.error));
-      } //  else {
-      //   emit(ArticlesException(articles.error));
-      // }
+      }
     } else if (event is GetSavedArticles) {
       emit(ArticlesLoading());
       var articles = await arti.getSavedArticles();
       emit(ArticlesDone(articles.data!));
     } else if (event is SaveArticle) {
-      //
+      //emit(ArticlesLoading());
       int state = await arti.saveArticle(event.articel);
       if (state != 0) {
-        ToastMessage().SusseccMessage('تمت اضافته للمفضلة');
+        emit(SaveArticleState('Success', true));
       } else {
-        ToastMessage().Infoessage('هذه المقالة مضافة مسبقا');
+        emit(SaveArticleState('Falied', false));
       }
-
-      // Fluttertoast.showToast(
-      //     msg: state.toString(),
-      //     toastLength: Toast.LENGTH_SHORT,
-      //     gravity: ToastGravity.CENTER,
-      //     timeInSecForIosWeb: 1,
-      //     backgroundColor: Colors.red,
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
-
-      //  Toast.show('تمت إضافته للمفضلة');
-      // if (state == 0) {
-      //   Toast.show('this article is allready exisit');
-      // } else {
-      //   Toast.show('this article saved susseflly',
-      //       duration: Toast.lengthShort, gravity: Toast.bottom);
-      // }
-      //  await arti.getSavedArticles();
-
-      // emit(MessageDone(state.toString()));
-      // emit(ArticlesDone(articles.data));
+      // articles = await arti.getSearchArticles('messi');
+      // print(articles.data);
+      // emit();
     } else if (event is DropArticle) {
       //emit(ArticlesLoading());
       await arti.dropArticle(event.index);
