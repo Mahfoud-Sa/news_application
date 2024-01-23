@@ -21,3 +21,9 @@ class SaveArticleState extends ArticleState {
   final bool status;
   SaveArticleState(this.message, this.status);
 }
+
+class DropArticleState extends ArticleState {
+  final String message;
+  final bool status;
+  DropArticleState(this.message, this.status);
+}

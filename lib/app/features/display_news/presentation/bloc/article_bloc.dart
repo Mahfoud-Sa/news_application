@@ -18,7 +18,7 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     if (event is GetSearchArticles) {
       emit(ArticlesLoading());
       articles = await arti.getSearchArticles(event.search);
-      if (articles is DataSuccess && articles.data!.isNotEmpty) {
+      if (articles is DataSuccess) {
         emit(ArticlesDone(articles.data!));
       } else if (articles is DataFailed) {
         emit(ArticlesException(articles.error));
@@ -40,9 +40,12 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
       // emit();
     } else if (event is DropArticle) {
       //emit(ArticlesLoading());
-      await arti.dropArticle(event.index);
-
-      ToastMessage().SusseccMessage('تم حذف المقالة بنجاح');
+      int state = await arti.dropArticle(event.index);
+      if (state != 0) {
+        emit(DropArticleState('Success', true));
+      } else {
+        emit(DropArticleState('Failed', false));
+      }
 
       var articles = await arti.getSavedArticles();
       // print(articles.data);

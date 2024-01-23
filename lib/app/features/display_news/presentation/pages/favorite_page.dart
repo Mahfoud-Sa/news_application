@@ -29,10 +29,21 @@ class _FavoritePageState extends State<FavoritePage> {
     return Scaffold(
         appBar: AppBar(),
         body: BlocConsumer<ArticleBloc, ArticleState>(
+          buildWhen: (previous, current) {
+            return current is! DropArticleState;
+          },
           listener: (context, state) {
-            // if (state is MessageDone) {
-            //   ToastMessage().Infoessage(state.errorMessage);
-            // }
+            if (state is DropArticleState) {
+              if (state.status) {
+                ToastMessage().SusseccMessage(
+                  AppLocalizations.of(context)!
+                      .article_has_been_deleted_susseflly,
+                );
+              } else {
+                ToastMessage()
+                    .Infoessage(AppLocalizations.of(context)!.failed_to_delete);
+              }
+            }
           },
           builder: (context, state) {
             if (state is ArticlesDone) {
@@ -75,7 +86,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 ],
               ));
             } else {
-              return Text('asdf');
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ));
