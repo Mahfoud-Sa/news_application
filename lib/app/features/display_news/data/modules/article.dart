@@ -5,24 +5,28 @@ import 'source.dart';
 
 @JsonSerializable()
 class ArticleModel extends ArticleEntity {
-  final SourceModel? source;
+  SourceModel? source;
+  int? id;
 
   final String? author;
   final String? title;
   final String? descripution;
   final String? url;
   final String? urlToImage;
-  final DateTime? publishedAt;
+//  final DateTime? publishedAt;
   final String? content;
 
-  const ArticleModel({
+  //var id;
+
+  ArticleModel({
+    this.id,
     this.source,
     this.author,
     this.title,
     this.descripution,
     this.url,
     this.urlToImage,
-    this.publishedAt,
+    // this.publishedAt,
     this.content,
   });
 
@@ -38,7 +42,20 @@ class ArticleModel extends ArticleEntity {
         descripution: json["description"] ?? "Unknewn",
         url: json["url"] ?? "Unknewn",
         urlToImage: json["urlToImage"] ?? "Unknewn",
-        publishedAt: DateTime.parse(json["publishedAt"]),
+        //   publishedAt: DateTime.parse(json["publishedAt"]),
+        content: json["content"] ?? "Unknewn",
+      );
+
+  factory ArticleModel.fromLocalDataBase(Map<String, dynamic> json) =>
+      ArticleModel(
+        id: json["id"],
+        source: SourceModel(id: json['source_id'], name: json['source_name']),
+        author: json["author"] ?? "Unknewn",
+        title: json["title"] ?? "Unknewn",
+        descripution: json["description"] ?? "Unknewn",
+        url: json["url"] ?? "Unknewn",
+        urlToImage: json["urlToImage"] ?? "Unknewn",
+        // publishedAt: DateTime.parse(json["publishedAt"]),
         content: json["content"] ?? "Unknewn",
       );
 }

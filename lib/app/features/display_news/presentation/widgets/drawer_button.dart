@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/app/features/app_setting/presentation/pages/setting_page.dart';
 
 class DrawerBtn extends StatelessWidget {
   final String label;
@@ -23,7 +22,7 @@ class DrawerBtn extends StatelessWidget {
               builder: (context) => Page,
             ));
       },
-      child: Container(
+      child: SizedBox(
         height: 60,
         width: 250,
         child: Card(

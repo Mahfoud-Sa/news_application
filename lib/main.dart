@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/app/features/app_setting/data/datasources/local_storage_services.dart';
-import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_bloc.dart';
 import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/pages/homePage.dart';
@@ -10,10 +8,7 @@ import 'package:news_app/initialization_dependencies.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await initializationDependencies();
-  //applicationLanguage;
-  //print(applicationLanguage);
   runApp(MyApp(appLanguage: applicationLanguage));
 }
 
@@ -24,10 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//ToastContext().init(context);
     return MultiBlocProvider(
         providers: [
-          BlocProvider<RemoteArticleBloc>(
-            create: (context) => RemoteArticleBloc(),
+          BlocProvider<ArticleBloc>(
+            create: (context) => ArticleBloc(),
           ),
           BlocProvider<AppSettingBloc>(
             create: (context) =>
@@ -40,7 +36,7 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               debugShowCheckedModeBanner: false,
-              title: 'News Application',
+              onGenerateTitle: (c) => AppLocalizations.of(c)!.newsApplication,
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                 useMaterial3: true,

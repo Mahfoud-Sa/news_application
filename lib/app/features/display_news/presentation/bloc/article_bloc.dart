@@ -5,27 +5,51 @@ import 'package:news_app/app/features/display_news/data/repository/article_repos
 import 'package:news_app/app/features/display_news/presentation/bloc/article_event.dart';
 import 'package:news_app/app/features/display_news/presentation/bloc/article_state.dart';
 
-class RemoteArticleBloc extends Bloc<RemoteArticleEvent, RemoteArticleState> {
-  RemoteArticleBloc() : super(RemoteArticlesLoading()) {
-    on<RemoteArticleEvent>(_ongetArticles);
+class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
+  ArticleBloc() : super(ArticlesLoading()) {
+    on<ArticleEvent>(_ongetArticles);
   }
 
   FutureOr<void> _ongetArticles(
-      RemoteArticleEvent event, Emitter<RemoteArticleState> emit) async {
+      ArticleEvent event, Emitter<ArticleState> emit) async {
     ArticleRepositoryImpl arti = ArticleRepositoryImpl();
-
-    emit(RemoteArticlesLoading());
+    var articles = null;
+    var Savedarticles = null;
     if (event is GetSearchArticles) {
-      var articles = await arti.getSearchArticles(event.search);
-      if (articles is DataSuccess && articles.data!.isNotEmpty) {
-        emit(RemoteArticlesDone(articles.data!));
+      emit(ArticlesLoading());
+      articles = await arti.getSearchArticles(event.search);
+      if (articles is DataSuccess) {
+        emit(ArticlesDone(articles.data!));
       } else if (articles is DataFailed) {
-        emit(RemoteArticlesException(articles.error));
-      } else {
-        emit(RemoteArticlesLoading());
+        emit(ArticlesException(articles.error));
       }
-    } else {
-      //emit(RemoteArticlesException('Nothing to show'));
+    } else if (event is GetSavedArticles) {
+      emit(ArticlesLoading());
+      Savedarticles = await arti.getSavedArticles();
+      emit(ArticlesDone(articles.data!));
+    } else if (event is SaveArticle) {
+      //emit(ArticlesLoading());
+      int state = await arti.saveArticle(event.articel);
+      if (state != 0) {
+        emit(SaveArticleState('Success', true));
+      } else {
+        emit(SaveArticleState('Falied', false));
+      }
+      // articles = await arti.getSearchArticles('messi');
+      // print(articles.data);
+      // emit();
+    } else if (event is DropArticle) {
+      //emit(ArticlesLoading());
+      int state = await arti.dropArticle(event.index);
+      if (state != 0) {
+        emit(DropArticleState('Success', true));
+      } else {
+        emit(DropArticleState('Failed', false));
+      }
+
+      var articles = await arti.getSavedArticles();
+      // print(articles.data);
+      emit(ArticlesDone(articles.data!));
     }
   }
 }
