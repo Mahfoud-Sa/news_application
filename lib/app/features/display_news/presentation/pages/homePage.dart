@@ -12,6 +12,7 @@ import 'package:news_app/app/features/display_news/presentation/widgets/search_w
 import 'package:news_app/app/core/resources/category.dart' as category;
 import 'package:word_generator/word_generator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   final String Language;
@@ -67,8 +68,17 @@ class _HomePageState extends State<HomePage> {
             if (state is ArticlesDone) {
               //empty result
               if (state.data.isEmpty) {
-                return Center(
-                    child: Text(AppLocalizations.of(context)!.nothingToShow));
+                return Column(
+                  children: [
+                    Center(
+                        child: SvgPicture.asset(
+                      'assets/svgs/empty_result.svg',
+                    )),
+                    Center(
+                      child: Text(AppLocalizations.of(context)!.nothingToShow),
+                    )
+                  ],
+                );
               }
               //result
               else {
