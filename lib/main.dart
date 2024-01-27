@@ -4,18 +4,24 @@ import 'package:news_app/app/features/app_setting/presentation/bloc/app_setting_
 import 'package:news_app/app/features/display_news/presentation/bloc/article_bloc.dart';
 import 'package:news_app/app/features/display_news/presentation/pages/homePage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:news_app/app/features/on_bording/presentation/pages/intropage.dart';
 import 'package:news_app/initialization_dependencies.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializationDependencies();
-  runApp(MyApp(appLanguage: applicationLanguage));
+  runApp(MyApp(
+    appLanguage: applicationLanguage,
+    showOnBordingPages: showOnBordingPages,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final String appLanguage;
+  final showOnBordingPages;
 
-  MyApp({super.key, required this.appLanguage});
+  MyApp(
+      {super.key, required this.appLanguage, required this.showOnBordingPages});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +48,13 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
               ),
               locale: Locale(state.language),
-              home: HomePage(
-                Language: state.language,
-              ),
+              home: showOnBordingPages
+                  ? OnBording(
+                      Language: state.language,
+                    )
+                  : HomePage(
+                      Language: state.language,
+                    ),
             );
           },
         ));

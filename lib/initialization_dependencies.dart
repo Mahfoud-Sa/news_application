@@ -10,6 +10,7 @@ Future<void> initializationDependencies() async {
 //Local Storage
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   applicationLanguage = localStorage.getString("applicationLanguage") ?? 'en';
+  showOnBordingPages = localStorage.getBool('showOnBordingPages') ?? true;
 
   // await AppDataBaseServices();
   final _appDataBaseServices = await AppDataBaseServices();
@@ -18,17 +19,4 @@ Future<void> initializationDependencies() async {
 
   var _AppDataBaseServices = await getIt.get<AppDataBaseServices>();
   await _AppDataBaseServices.articleDao.getAll();
-
-  // print(await _AppDataBaseServices.articleDao.insertArticle(ArticleModel(
-  //   source: const SourceModel(id: '2', name: 'sultain'),
-  //   author: 'CNN',
-  //   title: 'Samsung',
-  //   content: 'Galaxy s23',
-  //   descripution: 'one of the most related phones in this word',
-  //   url: 'https://www.youtube.com/watch?v=eNvUS-6PTbs',
-  //   urlToImage:
-  //       'https://th.bing.com/th/id/OIP.7V4xLOup-MrOUTgvKLoNTgHaEH?rs=1&pid=ImgDetMain',
-  //   publishedAt: DateTime.now(),
-  //   //  content: article.content,
-  // )));
 }
